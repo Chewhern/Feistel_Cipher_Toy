@@ -4,7 +4,7 @@ This application showcase how feistel cipher works as a whole.
 ## Feistel Cipher Note
 The F function in feistel cipher diagram requires cryptographers to use either strong PRF(Pseudo-Random Function) which people can assume it as a good hashing function/algorithm or strong PRP (Pseudo-Random Permutation) which people can assume as the S-Box in AES. However, it's recommended to use AES,ChaCha,Salsa as they have been standardized and well tested. Don't use anything I have written in production code.
 
-The current required minimum encryption/decryption rounds is 4.
+The current required minimum encryption/decryption rounds is 4 (if properly implemented).
 
 ## Side Note
 This feistel cipher application have not go through linear,differential,non-linear analysis and it will have a lot of cryptography algorithm's vulnerability like time-caching attack and side channel attacks.
