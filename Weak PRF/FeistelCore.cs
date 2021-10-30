@@ -28,8 +28,6 @@ namespace FeistelToy
             Byte[] RightMessage = new Byte[16];
             Byte[] PreviousSubKey = new Byte[16];
             Byte[] CipherText = new Byte[] { };
-            Byte[] TempSubKey = new Byte[] { };
-            Byte[] DerivedSubKey = new Byte[] { };
             Byte[] SubKey = new Byte[] { };
             Byte[] RoundKey = new Byte[] { };
             Byte[] HMAC = new Byte[] { };
@@ -57,11 +55,7 @@ namespace FeistelToy
                 else 
                 {
                     PreviousSubKey = SubKey;
-                    TempSubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, Key, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
-                    DerivedSubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, PreviousSubKey, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
-                    SubKey = XORHelper.XOR(DerivedSubKey, TempSubKey);
-                    SodiumSecureMemory.SecureClearBytes(DerivedSubKey);
-                    SodiumSecureMemory.SecureClearBytes(TempSubKey);
+                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, Key, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);                    
                     SodiumSecureMemory.SecureClearBytes(PreviousSubKey);
                 }
                 RoundKey = GenerateRoundKey(SubKey);
@@ -80,6 +74,8 @@ namespace FeistelToy
             }
             SodiumSecureMemory.SecureClearBytes(SubKey);
             ActualCipherText = RightMessage.Concat(LeftMessage).ToArray();
+            SodiumSecureMemory.SecureClearBytes(LeftMessage);
+            SodiumSecureMemory.SecureClearBytes(RightMessage);
             if (ClearKey == true) 
             {
                 SodiumSecureMemory.SecureClearBytes(Key);
@@ -104,8 +100,6 @@ namespace FeistelToy
             Byte[] RightMessage = new Byte[16];
             Byte[] PreviousSubKey = new Byte[16];
             Byte[] Buff = new Byte[] { };
-            Byte[] TempSubKey = new Byte[] { };
-            Byte[] DerivedSubKey = new Byte[] { };
             Byte[] SubKey = new Byte[] { };
             Byte[] RoundKey = new Byte[] { };
             Byte[] HMAC = new Byte[] { };
@@ -133,11 +127,7 @@ namespace FeistelToy
                 else
                 {
                     PreviousSubKey = SubKey;
-                    TempSubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, Key, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
-                    DerivedSubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, PreviousSubKey, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
-                    SubKey = XORHelper.XOR(DerivedSubKey, TempSubKey);
-                    SodiumSecureMemory.SecureClearBytes(DerivedSubKey);
-                    SodiumSecureMemory.SecureClearBytes(TempSubKey);
+                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, Key, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
                     SodiumSecureMemory.SecureClearBytes(PreviousSubKey);
                 }
                 RoundKey = GenerateRoundKey(SubKey);
@@ -157,6 +147,8 @@ namespace FeistelToy
             }
             SodiumSecureMemory.SecureClearBytes(SubKey);
             ActualBuff = RightMessage.Concat(LeftMessage).ToArray();
+            SodiumSecureMemory.SecureClearBytes(LeftMessage);
+            SodiumSecureMemory.SecureClearBytes(RightMessage);
             if (ClearKey == true)
             {
                 SodiumSecureMemory.SecureClearBytes(Key);
