@@ -11,7 +11,6 @@ namespace FeistelToy
 {
     public static class FeistelCore
     {
-
         public static Byte[] Encrypt(Byte[] Message,Byte[] Key,Boolean ClearKey=false) 
         {
             if (Message == null)
@@ -22,7 +21,7 @@ namespace FeistelToy
             {
                 if (Message.Length != 32)
                 {
-                    throw new ArgumentException("Error: Message must exactly be 16 bytes in length");
+                    throw new ArgumentException("Error: Message must exactly be 32 bytes in length");
                 }
             }
             Byte[] LeftMessage = new Byte[16];
@@ -30,6 +29,7 @@ namespace FeistelToy
             Byte[] PreviousSubKey = new Byte[16];
             Byte[] CipherText = new Byte[] { };
             Byte[] TempSubKey = new Byte[] { };
+            Byte[] DerivedSubKey = new Byte[] { };
             Byte[] SubKey = new Byte[] { };
             Byte[] RoundKey = new Byte[] { };
             Byte[] HMAC = new Byte[] { };
@@ -58,8 +58,9 @@ namespace FeistelToy
                 {
                     PreviousSubKey = SubKey;
                     TempSubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, Key, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
-                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, PreviousSubKey, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
-                    SubKey = XORHelper.XOR(SubKey, TempSubKey);
+                    DerivedSubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, PreviousSubKey, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
+                    SubKey = XORHelper.XOR(DerivedSubKey, TempSubKey);
+                    SodiumSecureMemory.SecureClearBytes(DerivedSubKey);
                     SodiumSecureMemory.SecureClearBytes(TempSubKey);
                     SodiumSecureMemory.SecureClearBytes(PreviousSubKey);
                 }
@@ -90,13 +91,13 @@ namespace FeistelToy
         {
             if (CipherText == null)
             {
-                throw new ArgumentException("Error: Message can't be null/empty");
+                throw new ArgumentException("Error: Cipher Text can't be null/empty");
             }
             else
             {
                 if (CipherText.Length != 32)
                 {
-                    throw new ArgumentException("Error: Message must exactly be 16 bytes in length");
+                    throw new ArgumentException("Error: Cipher Text must exactly be 32 bytes in length");
                 }
             }
             Byte[] LeftMessage = new Byte[16];
@@ -104,6 +105,7 @@ namespace FeistelToy
             Byte[] PreviousSubKey = new Byte[16];
             Byte[] Buff = new Byte[] { };
             Byte[] TempSubKey = new Byte[] { };
+            Byte[] DerivedSubKey = new Byte[] { };
             Byte[] SubKey = new Byte[] { };
             Byte[] RoundKey = new Byte[] { };
             Byte[] HMAC = new Byte[] { };
@@ -132,8 +134,9 @@ namespace FeistelToy
                 {
                     PreviousSubKey = SubKey;
                     TempSubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, Key, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
-                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, PreviousSubKey, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
-                    SubKey = XORHelper.XOR(SubKey, TempSubKey);
+                    DerivedSubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, PreviousSubKey, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
+                    SubKey = XORHelper.XOR(DerivedSubKey, TempSubKey);
+                    SodiumSecureMemory.SecureClearBytes(DerivedSubKey);
                     SodiumSecureMemory.SecureClearBytes(TempSubKey);
                     SodiumSecureMemory.SecureClearBytes(PreviousSubKey);
                 }
