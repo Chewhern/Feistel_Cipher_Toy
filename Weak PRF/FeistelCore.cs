@@ -211,13 +211,13 @@ namespace FeistelToy
 
         public static Byte[] GenerateRoundKey(Byte[] Key) 
         {
-            if (Key == null) 
+            if (Key == null)
             {
                 throw new ArgumentException("Error: Key can't be null");
             }
-            else 
+            else
             {
-                if (Key.Length != 32) 
+                if (Key.Length != 32)
                 {
                     throw new ArgumentException("Error: Key must exactly be 32 bytes in length");
                 }
@@ -260,14 +260,14 @@ namespace FeistelToy
                 SubKeyUInt6[SubKeyUIntLoop] ^= SubKeyUInt7[SubKeyUIntLoop];
                 SubKeyUInt7[SubKeyUIntLoop] ^= SubKeyUInt8[SubKeyUIntLoop];
                 SubKeyUInt8[SubKeyUIntLoop] ^= SubKeyUInt1[SubKeyUIntLoop];
-                SubKeyUInt1[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop] >> 16;
-                SubKeyUInt2[SubKeyUIntLoop] = SubKeyUInt2[SubKeyUIntLoop] >> 16;
-                SubKeyUInt3[SubKeyUIntLoop] = SubKeyUInt3[SubKeyUIntLoop] >> 16;
-                SubKeyUInt4[SubKeyUIntLoop] = SubKeyUInt4[SubKeyUIntLoop] >> 16;
-                SubKeyUInt5[SubKeyUIntLoop] = SubKeyUInt5[SubKeyUIntLoop] >> 16;
-                SubKeyUInt6[SubKeyUIntLoop] = SubKeyUInt6[SubKeyUIntLoop] >> 16;
-                SubKeyUInt7[SubKeyUIntLoop] = SubKeyUInt7[SubKeyUIntLoop] >> 16;
-                SubKeyUInt8[SubKeyUIntLoop] = SubKeyUInt8[SubKeyUIntLoop] >> 16;
+                SubKeyUInt1[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop] >> 4;
+                SubKeyUInt2[SubKeyUIntLoop] = SubKeyUInt2[SubKeyUIntLoop] >> 4;
+                SubKeyUInt3[SubKeyUIntLoop] = SubKeyUInt3[SubKeyUIntLoop] >> 4;
+                SubKeyUInt4[SubKeyUIntLoop] = SubKeyUInt4[SubKeyUIntLoop] >> 4;
+                SubKeyUInt5[SubKeyUIntLoop] = SubKeyUInt5[SubKeyUIntLoop] >> 4;
+                SubKeyUInt6[SubKeyUIntLoop] = SubKeyUInt6[SubKeyUIntLoop] >> 4;
+                SubKeyUInt7[SubKeyUIntLoop] = SubKeyUInt7[SubKeyUIntLoop] >> 4;
+                SubKeyUInt8[SubKeyUIntLoop] = SubKeyUInt8[SubKeyUIntLoop] >> 4;
                 SubKeyUInt1[SubKeyUIntLoop] ^= SubKeyUInt2[SubKeyUIntLoop];
                 SubKeyUInt2[SubKeyUIntLoop] ^= SubKeyUInt3[SubKeyUIntLoop];
                 SubKeyUInt3[SubKeyUIntLoop] ^= SubKeyUInt4[SubKeyUIntLoop];
@@ -276,14 +276,14 @@ namespace FeistelToy
                 SubKeyUInt6[SubKeyUIntLoop] ^= SubKeyUInt7[SubKeyUIntLoop];
                 SubKeyUInt7[SubKeyUIntLoop] ^= SubKeyUInt8[SubKeyUIntLoop];
                 SubKeyUInt8[SubKeyUIntLoop] ^= SubKeyUInt1[SubKeyUIntLoop];
-                SubKeyUInt1[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop] << 16;
-                SubKeyUInt2[SubKeyUIntLoop] = SubKeyUInt2[SubKeyUIntLoop] << 16;
-                SubKeyUInt3[SubKeyUIntLoop] = SubKeyUInt3[SubKeyUIntLoop] << 16;
-                SubKeyUInt4[SubKeyUIntLoop] = SubKeyUInt4[SubKeyUIntLoop] << 16;
-                SubKeyUInt5[SubKeyUIntLoop] = SubKeyUInt5[SubKeyUIntLoop] << 16;
-                SubKeyUInt6[SubKeyUIntLoop] = SubKeyUInt6[SubKeyUIntLoop] << 16;
-                SubKeyUInt7[SubKeyUIntLoop] = SubKeyUInt7[SubKeyUIntLoop] << 16;
-                SubKeyUInt8[SubKeyUIntLoop] = SubKeyUInt8[SubKeyUIntLoop] << 16;
+                SubKeyUInt1[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop] << 4;
+                SubKeyUInt2[SubKeyUIntLoop] = SubKeyUInt2[SubKeyUIntLoop] << 4;
+                SubKeyUInt3[SubKeyUIntLoop] = SubKeyUInt3[SubKeyUIntLoop] << 4;
+                SubKeyUInt4[SubKeyUIntLoop] = SubKeyUInt4[SubKeyUIntLoop] << 4;
+                SubKeyUInt5[SubKeyUIntLoop] = SubKeyUInt5[SubKeyUIntLoop] << 4;
+                SubKeyUInt6[SubKeyUIntLoop] = SubKeyUInt6[SubKeyUIntLoop] << 4;
+                SubKeyUInt7[SubKeyUIntLoop] = SubKeyUInt7[SubKeyUIntLoop] << 4;
+                SubKeyUInt8[SubKeyUIntLoop] = SubKeyUInt8[SubKeyUIntLoop] << 4;
                 SubKeyUInt1[SubKeyUIntLoop] ^= SubKeyUInt2[SubKeyUIntLoop];
                 SubKeyUInt2[SubKeyUIntLoop] ^= SubKeyUInt3[SubKeyUIntLoop];
                 SubKeyUInt3[SubKeyUIntLoop] ^= SubKeyUInt4[SubKeyUIntLoop];
@@ -299,9 +299,9 @@ namespace FeistelToy
                 SubKeyUInt5[SubKeyUIntLoop] = SubKeyUInt6[SubKeyUIntLoop];
                 SubKeyUInt6[SubKeyUIntLoop] = SubKeyUInt7[SubKeyUIntLoop];
                 SubKeyUInt7[SubKeyUIntLoop] = SubKeyUInt8[SubKeyUIntLoop];
-                SubKeyUInt8[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop]>>16;
+                SubKeyUInt8[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop] >> 4;
                 SubKeyUInt8[SubKeyUIntLoop] ^= SubKeyUInt2[SubKeyUIntLoop];
-                SubKeyUInt8[SubKeyUIntLoop] <<= 16;
+                SubKeyUInt8[SubKeyUIntLoop] <<= 4;
                 SubKeyUInt8[SubKeyUIntLoop] ^= SubKeyUInt3[SubKeyUIntLoop];
                 if (SubKeyUIntLoop == 3)
                 {
@@ -312,47 +312,47 @@ namespace FeistelToy
             }
             Loop = 0;
             SubKeyUIntLoop = 0;
-            while (Loop < 16) 
+            while (Loop < 16)
             {
                 SubKeyUInt1[SubKeyUIntLoop] ^= SubKeyUInt2[SubKeyUIntLoop];
-                SubKeyUInt1[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop] >> 16;
+                SubKeyUInt1[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop] >> 4;
                 SubKeyUInt1[SubKeyUIntLoop] ^= SubKeyUInt3[SubKeyUIntLoop];
-                SubKeyUInt1[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop] << 24;
+                SubKeyUInt1[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop] << 6;
                 SubKeyUInt1[SubKeyUIntLoop] ^= SubKeyUInt4[SubKeyUIntLoop];
                 SubKeyUInt2[SubKeyUIntLoop] ^= SubKeyUInt3[SubKeyUIntLoop];
-                SubKeyUInt2[SubKeyUIntLoop] = SubKeyUInt2[SubKeyUIntLoop] >> 16;
+                SubKeyUInt2[SubKeyUIntLoop] = SubKeyUInt2[SubKeyUIntLoop] >> 4;
                 SubKeyUInt2[SubKeyUIntLoop] ^= SubKeyUInt4[SubKeyUIntLoop];
-                SubKeyUInt2[SubKeyUIntLoop] = SubKeyUInt2[SubKeyUIntLoop] << 24;
+                SubKeyUInt2[SubKeyUIntLoop] = SubKeyUInt2[SubKeyUIntLoop] << 6;
                 SubKeyUInt2[SubKeyUIntLoop] ^= SubKeyUInt5[SubKeyUIntLoop];
                 SubKeyUInt3[SubKeyUIntLoop] ^= SubKeyUInt4[SubKeyUIntLoop];
-                SubKeyUInt3[SubKeyUIntLoop] = SubKeyUInt3[SubKeyUIntLoop] >> 16;
+                SubKeyUInt3[SubKeyUIntLoop] = SubKeyUInt3[SubKeyUIntLoop] >> 4;
                 SubKeyUInt3[SubKeyUIntLoop] ^= SubKeyUInt5[SubKeyUIntLoop];
-                SubKeyUInt3[SubKeyUIntLoop] = SubKeyUInt3[SubKeyUIntLoop] << 24;
+                SubKeyUInt3[SubKeyUIntLoop] = SubKeyUInt3[SubKeyUIntLoop] << 6;
                 SubKeyUInt3[SubKeyUIntLoop] ^= SubKeyUInt6[SubKeyUIntLoop];
                 SubKeyUInt4[SubKeyUIntLoop] ^= SubKeyUInt5[SubKeyUIntLoop];
-                SubKeyUInt4[SubKeyUIntLoop] = SubKeyUInt4[SubKeyUIntLoop] >> 16;
+                SubKeyUInt4[SubKeyUIntLoop] = SubKeyUInt4[SubKeyUIntLoop] >> 4;
                 SubKeyUInt4[SubKeyUIntLoop] ^= SubKeyUInt6[SubKeyUIntLoop];
-                SubKeyUInt4[SubKeyUIntLoop] = SubKeyUInt4[SubKeyUIntLoop] << 24;
+                SubKeyUInt4[SubKeyUIntLoop] = SubKeyUInt4[SubKeyUIntLoop] << 6;
                 SubKeyUInt4[SubKeyUIntLoop] ^= SubKeyUInt7[SubKeyUIntLoop];
                 SubKeyUInt5[SubKeyUIntLoop] ^= SubKeyUInt6[SubKeyUIntLoop];
-                SubKeyUInt5[SubKeyUIntLoop] = SubKeyUInt5[SubKeyUIntLoop] >> 16;
+                SubKeyUInt5[SubKeyUIntLoop] = SubKeyUInt5[SubKeyUIntLoop] >> 4;
                 SubKeyUInt5[SubKeyUIntLoop] ^= SubKeyUInt7[SubKeyUIntLoop];
-                SubKeyUInt5[SubKeyUIntLoop] = SubKeyUInt5[SubKeyUIntLoop] << 24;
+                SubKeyUInt5[SubKeyUIntLoop] = SubKeyUInt5[SubKeyUIntLoop] << 6;
                 SubKeyUInt5[SubKeyUIntLoop] ^= SubKeyUInt8[SubKeyUIntLoop];
                 SubKeyUInt6[SubKeyUIntLoop] ^= SubKeyUInt7[SubKeyUIntLoop];
-                SubKeyUInt6[SubKeyUIntLoop] = SubKeyUInt6[SubKeyUIntLoop] >> 16;
+                SubKeyUInt6[SubKeyUIntLoop] = SubKeyUInt6[SubKeyUIntLoop] >> 4;
                 SubKeyUInt6[SubKeyUIntLoop] ^= SubKeyUInt8[SubKeyUIntLoop];
-                SubKeyUInt6[SubKeyUIntLoop] = SubKeyUInt6[SubKeyUIntLoop] << 24;
+                SubKeyUInt6[SubKeyUIntLoop] = SubKeyUInt6[SubKeyUIntLoop] << 6;
                 SubKeyUInt6[SubKeyUIntLoop] ^= SubKeyUInt1[SubKeyUIntLoop];
                 SubKeyUInt7[SubKeyUIntLoop] ^= SubKeyUInt8[SubKeyUIntLoop];
-                SubKeyUInt7[SubKeyUIntLoop] = SubKeyUInt7[SubKeyUIntLoop] >> 16;
+                SubKeyUInt7[SubKeyUIntLoop] = SubKeyUInt7[SubKeyUIntLoop] >> 4;
                 SubKeyUInt7[SubKeyUIntLoop] ^= SubKeyUInt1[SubKeyUIntLoop];
-                SubKeyUInt7[SubKeyUIntLoop] = SubKeyUInt7[SubKeyUIntLoop] << 24;
+                SubKeyUInt7[SubKeyUIntLoop] = SubKeyUInt7[SubKeyUIntLoop] << 6;
                 SubKeyUInt7[SubKeyUIntLoop] ^= SubKeyUInt2[SubKeyUIntLoop];
                 SubKeyUInt8[SubKeyUIntLoop] ^= SubKeyUInt1[SubKeyUIntLoop];
-                SubKeyUInt8[SubKeyUIntLoop] = SubKeyUInt8[SubKeyUIntLoop] >> 16;
+                SubKeyUInt8[SubKeyUIntLoop] = SubKeyUInt8[SubKeyUIntLoop] >> 4;
                 SubKeyUInt8[SubKeyUIntLoop] ^= SubKeyUInt2[SubKeyUIntLoop];
-                SubKeyUInt8[SubKeyUIntLoop] = SubKeyUInt8[SubKeyUIntLoop] << 24;
+                SubKeyUInt8[SubKeyUIntLoop] = SubKeyUInt8[SubKeyUIntLoop] << 6;
                 SubKeyUInt8[SubKeyUIntLoop] ^= SubKeyUInt3[SubKeyUIntLoop];
                 if (SubKeyUIntLoop == 3)
                 {
@@ -362,7 +362,7 @@ namespace FeistelToy
                 Loop += 1;
             }
             Loop = 0;
-            while (Loop < 4) 
+            while (Loop < 4)
             {
                 SubKey1 = SubKey1.Concat(ConvertUIntToByteArray(SubKeyUInt1[Loop])).ToArray();
                 SubKey2 = SubKey2.Concat(ConvertUIntToByteArray(SubKeyUInt2[Loop])).ToArray();
@@ -376,7 +376,7 @@ namespace FeistelToy
             }
             ConcatedSubKey = SubKey1.Concat(SubKey2).Concat(SubKey3).Concat(SubKey4).
                 Concat(SubKey5).Concat(SubKey6).Concat(SubKey7).Concat(SubKey8).ToArray();
-            MasterKey = SodiumKDF.KDFFunction(32, 1, "KDFForFC", ConcatedSubKey,true);
+            MasterKey = SodiumKDF.KDFFunction(32, 1, "KDFForFC", ConcatedSubKey, true);
 
             GCHandle MyGeneralGCHandle = GCHandle.Alloc(SubKeyUInt1, GCHandleType.Pinned);
             SodiumSecureMemory.MemZero(MyGeneralGCHandle.AddrOfPinnedObject(), SubKeyUInt1.Length * 4);
