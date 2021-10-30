@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ASodium;
+using System.Runtime.InteropServices;
 
 namespace FeistelToy
 {
@@ -51,6 +52,11 @@ namespace FeistelToy
             {
                 MessageBox.Show("Please enter any message to encrypt/decrypt");
             }
+        }
+
+        private static Byte[] ConvertUIntToByteArray(uint Value)
+        {
+            return BitConverter.GetBytes(Value);
         }
     }
 }

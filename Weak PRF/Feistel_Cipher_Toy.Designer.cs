@@ -147,10 +147,10 @@ namespace FeistelToy
             this.label6.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label6.Location = new System.Drawing.Point(431, 274);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(357, 152);
+            this.label6.Size = new System.Drawing.Size(341, 152);
             this.label6.TabIndex = 11;
-            this.label6.Text = "Please wait 12-20 seconds\r\nfor both the encryption\r\nand decryption process\r\nto fi" +
-    "nish";
+            this.label6.Text = "Please wait 6-10 seconds\r\nfor both the encryption\r\nand decryption process\r\nto fin" +
+    "ish";
             // 
             // Feistel_Cipher_Toy
             // 
