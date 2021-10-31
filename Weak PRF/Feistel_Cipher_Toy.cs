@@ -53,10 +53,5 @@ namespace FeistelToy
                 MessageBox.Show("Please enter any message to encrypt/decrypt");
             }
         }
-
-        private static Byte[] ConvertUIntToByteArray(uint Value)
-        {
-            return BitConverter.GetBytes(Value);
-        }
     }
 }
