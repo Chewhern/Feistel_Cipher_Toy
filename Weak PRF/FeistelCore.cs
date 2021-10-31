@@ -35,7 +35,7 @@ namespace FeistelToy
             Byte[] SubHMAC2 = new Byte[16];
             Byte[] Salt = new Byte[SodiumPasswordHashArgon2.GetSaltBytesLength()];
             Byte[] ActualCipherText = new Byte[] { };
-            int Count = 16;
+            int Count = 128;
             int Loop = 0;
             int LoopCount = 0;
             Array.Copy(Message, 0, LeftMessage, 0, 16);
@@ -50,20 +50,20 @@ namespace FeistelToy
                 Loop = 0;
                 if (LoopCount == 0) 
                 {
-                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, Key, Salt,SodiumPasswordHashArgon2.Strength.INTERACTIVE);
+                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDFCustom(32, Key, Salt,1,8192);
                 }
                 else 
                 {
                     PreviousSubKey = SubKey;
-                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, Key, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);                    
+                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDFCustom(32, Key, Salt, 1, 8192);
                     SodiumSecureMemory.SecureClearBytes(PreviousSubKey);
                 }
                 RoundKey = GenerateRoundKey(SubKey);
                 HMAC = GenerateHMACTextAsKey(RightMessage, RoundKey);
                 Array.Copy(HMAC, 0, SubHMAC1, 0, 16);
                 Array.Copy(HMAC, 16, SubHMAC2, 0, 16);
-                CipherText = XORHelper.XOR(LeftMessage, SubHMAC1);
-                CipherText = XORHelper.XOR(CipherText, SubHMAC2);
+                CipherText = FRXOR(LeftMessage, SubHMAC1);
+                CipherText = FRXOR(CipherText, SubHMAC2);
                 LeftMessage = RightMessage;
                 RightMessage = CipherText;
                 SodiumSecureMemory.SecureClearBytes(RoundKey);
@@ -107,7 +107,7 @@ namespace FeistelToy
             Byte[] SubHMAC2 = new Byte[16];
             Byte[] Salt = new Byte[SodiumPasswordHashArgon2.GetSaltBytesLength()];
             Byte[] ActualBuff = new Byte[] { };
-            Byte Count = 16;
+            Byte Count = 128;
             int Loop = 0;
             int LoopCount = 0;
             Array.Copy(CipherText, 0, LeftMessage, 0, 16);
@@ -122,20 +122,20 @@ namespace FeistelToy
                 Loop = 0;
                 if (LoopCount == 0)
                 {
-                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, Key, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
+                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDFCustom(32, Key, Salt, 1, 8192);
                 }
                 else
                 {
                     PreviousSubKey = SubKey;
-                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDF(32, Key, Salt, SodiumPasswordHashArgon2.Strength.INTERACTIVE);
+                    SubKey = SodiumPasswordHashArgon2.Argon2PBKDFCustom(32, Key, Salt, 1, 8192);
                     SodiumSecureMemory.SecureClearBytes(PreviousSubKey);
                 }
                 RoundKey = GenerateRoundKey(SubKey);
                 HMAC = GenerateHMACTextAsKey(RightMessage, RoundKey);
                 Array.Copy(HMAC, 0, SubHMAC1, 0, 16);
                 Array.Copy(HMAC, 16, SubHMAC2, 0, 16);
-                Buff = XORHelper.XOR(LeftMessage, SubHMAC1);
-                Buff = XORHelper.XOR(Buff, SubHMAC2);
+                Buff = FRXOR(LeftMessage, SubHMAC1);
+                Buff = FRXOR(Buff, SubHMAC2);
                 LeftMessage = RightMessage;
                 RightMessage = Buff;
                 SodiumSecureMemory.SecureClearBytes(RoundKey);
@@ -183,6 +183,8 @@ namespace FeistelToy
             Byte[] SubKey = new Byte[] { };
             Byte[] RoundKey = new Byte[] { };
             Byte[] HMAC = new Byte[] { };
+            Byte[] TempHMAC1 = new Byte[] { };
+            Byte[] TempHMAC2 = new Byte[] { };
             Byte[] SubHMAC1 = new Byte[32];
             Byte[] SubHMAC2 = new Byte[32];
             SubKey = SodiumKDF.KDFFunction(32, 1, "KDFFHMAC", Key);
@@ -191,11 +193,13 @@ namespace FeistelToy
             Array.Copy(HMAC,0,SubHMAC1,0,32);
             Array.Copy(HMAC, 32, SubHMAC2, 0, 32);
             SodiumSecureMemory.SecureClearBytes(HMAC);
-            HMAC = XORHelper.XOR(SubHMAC1, SubHMAC2);
-            HMAC = XORHelper.XOR(HMAC, RoundKey);
-            HMAC = XORHelper.XOR(HMAC, SubKey);
+            TempHMAC1 = FRXOR(SubHMAC1, SubHMAC2);
+            TempHMAC2 = FRXOR(TempHMAC1, RoundKey);
+            HMAC = FRXOR(TempHMAC2, SubKey);
             SodiumSecureMemory.SecureClearBytes(SubHMAC1);
             SodiumSecureMemory.SecureClearBytes(SubHMAC2);
+            SodiumSecureMemory.SecureClearBytes(TempHMAC1);
+            SodiumSecureMemory.SecureClearBytes(TempHMAC2);
             SodiumSecureMemory.SecureClearBytes(RoundKey);
             SodiumSecureMemory.SecureClearBytes(SubKey);
             return HMAC;
@@ -258,7 +262,7 @@ namespace FeistelToy
             SodiumSecureMemory.SecureClearBytes(TempKey6);
             SodiumSecureMemory.SecureClearBytes(TempKey7);
             SodiumSecureMemory.SecureClearBytes(TempKey8);
-            while (Loop < 16)
+            while (Loop < 128)
             {
                 SubKeyUInt1[SubKeyUIntLoop] ^= SubKeyUInt2[SubKeyUIntLoop];
                 SubKeyUInt2[SubKeyUIntLoop] ^= SubKeyUInt3[SubKeyUIntLoop];
@@ -296,7 +300,7 @@ namespace FeistelToy
             }
             Loop = 0;
             SubKeyUIntLoop = 0;
-            while (Loop < 16)
+            while (Loop < 128)
             {
                 SubKeyUInt1[SubKeyUIntLoop] ^= SubKeyUInt2[SubKeyUIntLoop];
                 SubKeyUInt1[SubKeyUIntLoop] = SubKeyUInt1[SubKeyUIntLoop] >> 2;
@@ -361,6 +365,69 @@ namespace FeistelToy
         private static Byte[] ConvertUIntToByteArray(uint Value) 
         {
             return BitConverter.GetBytes(Value);
+        }
+
+        private static Byte[] FRXOR(Byte[] Source1, Byte[] Source2)
+        {
+            if (Source1 == null)
+            {
+                throw new ArgumentException("Error: Source1 byte array can't be null");
+            }
+            if (Source2 == null)
+            {
+                throw new ArgumentException("Error: Source2 byte array can't be null");
+            }
+            if (Source1.Length != Source2.Length)
+            {
+                throw new ArgumentException("Error: Source1 and source2 byte array length must be the same");
+            }
+            if (Source1.Length % 4 != 0)
+            {
+                throw new ArgumentException("Error: Source1 and source2 byte array length must be divisible by 4");
+            }
+            int ArrayCount = Source1.Length / 4;
+            uint[] Source1uint = new uint[ArrayCount];
+            uint[] Source2uint = new uint[ArrayCount];
+            uint[] xoreduint = new uint[ArrayCount];
+            int Loop = 0;
+            Byte[] XOREDByte = new Byte[] { };
+            GCHandle MyGeneralGCHandle;
+            Byte[] TempArray1 = new Byte[4];
+            Byte[] TempArray2 = new Byte[4];
+            while (Loop < ArrayCount)
+            {
+                TempArray1 = new Byte[4];
+                TempArray2 = new Byte[4];
+                Array.Copy(Source1, (Loop * 4), TempArray1, 0, 4);
+                Array.Copy(Source2, (Loop * 4), TempArray2, 0, 4);
+                Source1uint[Loop] = BitConverter.ToUInt32(TempArray1);
+                Source2uint[Loop] = BitConverter.ToUInt32(TempArray2);
+                SodiumSecureMemory.SecureClearBytes(TempArray1);
+                SodiumSecureMemory.SecureClearBytes(TempArray2);
+                Loop += 1;
+            }
+            Loop = 0;
+            while (Loop < Source1uint.Length)
+            {
+                xoreduint[Loop] = Source1uint[Loop] ^ Source2uint[Loop];
+                Loop += 1;
+            }
+            Loop = 0;
+            while (Loop < ArrayCount)
+            {
+                XOREDByte = XOREDByte.Concat(BitConverter.GetBytes(xoreduint[Loop])).ToArray();
+                Loop += 1;
+            }
+            MyGeneralGCHandle = GCHandle.Alloc(Source1uint, GCHandleType.Pinned);
+            SodiumSecureMemory.MemZero(MyGeneralGCHandle.AddrOfPinnedObject(), Source1uint.Length * 4);
+            MyGeneralGCHandle.Free();
+            MyGeneralGCHandle = GCHandle.Alloc(Source2uint, GCHandleType.Pinned);
+            SodiumSecureMemory.MemZero(MyGeneralGCHandle.AddrOfPinnedObject(), Source2uint.Length * 4);
+            MyGeneralGCHandle.Free();
+            MyGeneralGCHandle = GCHandle.Alloc(xoreduint, GCHandleType.Pinned);
+            SodiumSecureMemory.MemZero(MyGeneralGCHandle.AddrOfPinnedObject(), xoreduint.Length * 4);
+            MyGeneralGCHandle.Free();
+            return XOREDByte;
         }
     }
 }

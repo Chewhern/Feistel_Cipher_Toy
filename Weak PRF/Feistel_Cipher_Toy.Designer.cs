@@ -40,7 +40,6 @@ namespace FeistelToy
             this.DPlainTextTB = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.ActionBTN = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -141,23 +140,11 @@ namespace FeistelToy
             this.ActionBTN.UseVisualStyleBackColor = true;
             this.ActionBTN.Click += new System.EventHandler(this.ActionBTN_Click);
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label6.Location = new System.Drawing.Point(431, 274);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(341, 152);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Please wait 6-10 seconds\r\nfor both the encryption\r\nand decryption process\r\nto fin" +
-    "ish";
-            // 
             // Feistel_Cipher_Toy
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 727);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.ActionBTN);
             this.Controls.Add(this.DPlainTextTB);
             this.Controls.Add(this.label5);
@@ -189,7 +176,6 @@ namespace FeistelToy
         private System.Windows.Forms.TextBox DPlainTextTB;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button ActionBTN;
-        private System.Windows.Forms.Label label6;
     }
 }
 
