@@ -58,7 +58,7 @@ namespace FeistelToy
                     SodiumSecureMemory.SecureClearBytes(PreviousSubKey);
                 }
                 RoundKey = GenerateRoundKey(SubKey,SecretMaterial);
-                EncryptedNonce = GenerateEncryptedNonce(RightMessage, Nonce , SecretMaterial ,RoundKey);
+                EncryptedNonce = GenerateEncryptedNonce(Nonce , SecretMaterial ,RoundKey);
                 Array.Copy(EncryptedNonce, 0, SubEncryptedNonce1, 0, 16);
                 Array.Copy(EncryptedNonce, 16, SubEncryptedNonce2, 0, 16);
                 CipherText = FRXOR(LeftMessage, SubEncryptedNonce1);
@@ -131,7 +131,7 @@ namespace FeistelToy
                     SodiumSecureMemory.SecureClearBytes(PreviousSubKey);
                 }
                 RoundKey = GenerateRoundKey(SubKey, SecretMaterial);
-                EncryptedNonce = GenerateEncryptedNonce(RightMessage, Nonce, SecretMaterial, RoundKey);
+                EncryptedNonce = GenerateEncryptedNonce(Nonce, SecretMaterial, RoundKey);
                 Array.Copy(EncryptedNonce, 0, SubEncryptedNonce1, 0, 16);
                 Array.Copy(EncryptedNonce, 16, SubEncryptedNonce2, 0, 16);
                 Buff = FRXOR(LeftMessage, SubEncryptedNonce1);
@@ -157,19 +157,8 @@ namespace FeistelToy
             return ActualBuff;
         }
 
-        public static Byte[] GenerateEncryptedNonce(Byte[] Message, Byte[] Nonce, Byte[] SecretMaterial ,Byte[] Key) 
+        public static Byte[] GenerateEncryptedNonce(Byte[] Nonce, Byte[] SecretMaterial ,Byte[] Key) 
         {
-            if (Message == null) 
-            {
-                throw new ArgumentException("Error: Message can't be null/empty");
-            }
-            else 
-            {
-                if (Message.Length != 16) 
-                {
-                    throw new ArgumentException("Error: Message must exactly be 16 bytes in length");
-                }
-            }
             if (Key == null)
             {
                 throw new ArgumentException("Error: Key can't be null");
