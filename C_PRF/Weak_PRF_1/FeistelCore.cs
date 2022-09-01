@@ -78,6 +78,7 @@ namespace FeistelToy
             SodiumSecureMemory.SecureClearBytes(RightMessage);
             if (ClearKey == true) 
             {
+                SodiumSecureMemory.SecureClearBytes(SecretMaterial);
                 SodiumSecureMemory.SecureClearBytes(Key);
             }
             return ActualCipherText;
