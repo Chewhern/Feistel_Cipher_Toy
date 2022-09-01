@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ASodium;
-using System.Runtime.InteropServices;
 
 namespace FeistelToy
 {
