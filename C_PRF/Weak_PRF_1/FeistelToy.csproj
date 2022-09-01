@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ASodium" Version="0.5.2" />
+    <PackageReference Include="BCASodium" Version="0.0.4" />
+    <PackageReference Include="libsodium" Version="1.0.18.1" />
+  </ItemGroup>
+
+</Project>
